@@ -1,0 +1,4 @@
+Django>=1.11
+djangorestframework>=3.7.3
+venusian>=1.0
+wrapt>=1.10.11
