@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 from .configurator import Configurator
 
 
-def setup(package: str, apps: Dict[List[Dict[str, str]]], namespace='metaframe', ignore: Optional[List[str]] = None) -> Configurator:
+def setup(package: str, apps: Dict[List[Dict[str, str]]], namespace='frameapp', ignore: Optional[List[str]] = None) -> Configurator:
     configurator = Configurator()
 
     for app_name, entry_points in apps.items():

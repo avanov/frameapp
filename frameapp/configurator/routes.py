@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 
 class RoutesConfigurator:
-    def __init__(self, route_prefix: str = '/', namespace: str = 'metaframe_namespace') -> None:
+    def __init__(self, route_prefix: str = '/', namespace: str = 'frameapp_namespace') -> None:
         self.registry: Dict[str, Dict[str, Route]] = OrderedDict()
         self.route_prefix = route_prefix
         self.namespace = namespace

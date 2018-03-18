@@ -185,7 +185,7 @@ def create_django_route(dispatcher: Dispatcher) -> List[URLPattern]:
         django_route_name = f'{dispatcher.route_namespace}.{dispatcher.route_name}-drf_viewset'
         pattern = dispatcher.route_pattern.lstrip('/')  # removes django warnings
         pattern = complete_route_pattern(pattern, dispatcher.route_rules, _django_rule_format)
-        drf_pattern = '(?P<__metaframe_dynamic_viewset__>/(?P<pk>[^/.]+))?'
+        drf_pattern = '(?P<__frameapp_dynamic_viewset__>/(?P<pk>[^/.]+))?'
         regex_pattern = f'^{pattern}{drf_pattern}$'
         callback = PredicatedHandler(dispatcher.route_rules, viewset_variants)
         log.debug(f'Creating DRF URL "{regex_pattern}" as the handler named "{dispatcher.route_name}" in the namespace "{dispatcher.route_namespace}".')
@@ -259,7 +259,7 @@ class DRFViewMixinWrapper:
         ])
 
     def __call__(self, request: HttpRequest, *args, **kwargs):
-        item_suffix = kwargs.pop('__metaframe_dynamic_viewset__', '')
+        item_suffix = kwargs.pop('__frameapp_dynamic_viewset__', '')
         if item_suffix:
             handler = self.item_handler
         else:
@@ -270,19 +270,19 @@ class DRFViewMixinWrapper:
         return f'DRFViewMixinWrapper(handler=[{self.collection_handler}, {self.item_handler}])'
 
     @staticmethod
-    def drf_metaframe_dispatch_patched_version(self: APIView, __metaframe_view_attr__: str, request, *args, **kwargs):
+    def drf_frameapp_dispatch_patched_version(self: APIView, __frameapp_view_attr__: str, request, *args, **kwargs):
         """ This portion of code is taken from DRF
         https://github.com/encode/django-rest-framework/blob/79be20a7c68e7c90dd4d5d23a9e6ee08b5f586ae/rest_framework/views.py#L465
 
         and then modified in order to support multiple handlers for the same request.
-        __metaframe_view_attr__ will always contain a name to a method whose predicates matched the request.
+        __frameapp_view_attr__ will always contain a name to a method whose predicates matched the request.
 
         Original docstring:
 
         `.dispatch()` is pretty much the same as Django's regular dispatch,
         but with extra hooks for startup, finalize, and exception handling.
         """
-        handler = getattr(self, __metaframe_view_attr__)
+        handler = getattr(self, __frameapp_view_attr__)
         log.debug(f'Entering patched DRF resolver with target method "{handler}"')
 
         self.args = args
@@ -306,13 +306,13 @@ class DRFAPIViewWrapper:
     """
     def __init__(self, view_cls: Type[APIView], view_attr: str) -> None:
         self.attr = view_attr
-        view_cls.dispatch = _drf_metaframe_dispatch_patched_version  # this has a global side-effect, not good enough
+        view_cls.dispatch = _drf_frameapp_dispatch_patched_version  # this has a global side-effect, not good enough
 
         self.handler = view_cls.as_view()
         self.csrf_exempt = getattr(self.handler, 'csrf_exempt', False)
         # Let's monkey-patch this view class with a b/w compatible .dispatch() method that understands
         # how to dispatch to predicated methods, and then let's generate an actual view handler.
-        self.handler.dispatch = _drf_metaframe_dispatch_patched_version
+        self.handler.dispatch = _drf_frameapp_dispatch_patched_version
 
     def __call__(self, request, *args, **kwargs):
         # DRF GenericViewSet is similar to DRF ModelViewSet, yet we have an extra step here.
@@ -326,19 +326,19 @@ class DRFAPIViewWrapper:
 # Note: DRF API Views are made CSRF exempt from within `as_view` as to prevent
 # accidental removal of this exemption in cases where `dispatch` needs to
 # be overridden.
-def _drf_metaframe_dispatch_patched_version(self: APIView, __metaframe_view_attr__: str, request, *args, **kwargs):
+def _drf_frameapp_dispatch_patched_version(self: APIView, __frameapp_view_attr__: str, request, *args, **kwargs):
     """ This portion of code is taken from DRF
     https://github.com/encode/django-rest-framework/blob/79be20a7c68e7c90dd4d5d23a9e6ee08b5f586ae/rest_framework/views.py#L465
 
     and then modified in order to support multiple handlers for the same request.
-    __metaframe_view_attr__ will always contain a name to a method whose predicates matched the request.
+    __frameapp_view_attr__ will always contain a name to a method whose predicates matched the request.
 
     Original docstring:
 
     `.dispatch()` is pretty much the same as Django's regular dispatch,
     but with extra hooks for startup, finalize, and exception handling.
     """
-    handler = getattr(self, __metaframe_view_attr__)
+    handler = getattr(self, __frameapp_view_attr__)
     log.debug(f'Entering patched DRF resolver with target method "{handler}"')
 
     self.args = args

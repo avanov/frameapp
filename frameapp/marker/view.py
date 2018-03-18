@@ -42,7 +42,7 @@ class http_endpoint:
             view_item = view_item._replace(renderer=renderer)
             route.view_metas.append(view_item)
 
-        info = self.venusian.attach(wrapped, callback, category='metaframe_namespace', depth=depth + 1)
+        info = self.venusian.attach(wrapped, callback, category='frameapp_namespace', depth=depth + 1)
         if info.scope == 'class':
             # if the decorator was attached to a method in a class, or
             # otherwise executed at class scope, we need to set an
