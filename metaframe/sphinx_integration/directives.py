@@ -1,20 +1,17 @@
 """ http://www.sphinx-doc.org/en/stable/extdev/markupapi.html
 """
-from functools import partial
-from typing import List, Union, Dict, Sequence
-
 import json
+from functools import partial
 from io import StringIO
+from typing import List, Union, Dict, Sequence
 
 from docutils import nodes
 from docutils.parsers.rst import Directive
-from docutils.statemachine import ViewList
 from docutils.parsers.rst.directives import unchanged
-
-from sphinx.util.nodes import nested_parse_with_titles
-from sphinx.util.docstrings import prepare_docstring
-
+from docutils.statemachine import ViewList
 from drf_openapi.entities import OpenApiSchemaGenerator
+from sphinx.util.docstrings import prepare_docstring
+from sphinx.util.nodes import nested_parse_with_titles
 
 from ..schemas import json_schema_str
 

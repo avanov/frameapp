@@ -1,4 +1,5 @@
 # https://docs.python.org/3/distutils/sourcedist.html#manifest
 include README.rst
 include LICENSE.txt
+recursive-include requirements *.txt
 recursive-include metaframe *.raml

@@ -1,5 +1,5 @@
-from typing import NamedTuple, Dict
 from collections import OrderedDict
+from typing import NamedTuple, Dict
 
 from .configurator.routes import Route
 from .configurator.sums import SumTypeMetaData

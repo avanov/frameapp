@@ -7,14 +7,15 @@ import logging
 from typing import Dict, List, Tuple, NamedTuple, Any, Optional, Type
 
 from django.http import HttpRequest
-from django.core.urlresolvers import RegexURLPattern
+from django.urls import URLPattern
+from django.urls.resolvers import RegexPattern
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import routers
 
 from .exceptions import ConfigurationError
 from .configurator import Configurator
-from .configurator.sums import SumType, SumTypeMetaclass
+from .configurator.sums import SumType
 from .configurator.routes import ViewVariant
 from .util import maybe_dotted
 from .view import PredicatedHandler
@@ -159,7 +160,7 @@ def complete_route_pattern(pattern: str, rules: Dict[str, Type[SumType]], rule_f
     return buf
 
 
-def create_django_route(dispatcher: Dispatcher) -> List[RegexURLPattern]:
+def create_django_route(dispatcher: Dispatcher) -> List[URLPattern]:
     view_variants = []
     viewset_variants = []
     for view_variant in dispatcher.view_variants:
@@ -178,7 +179,7 @@ def create_django_route(dispatcher: Dispatcher) -> List[RegexURLPattern]:
         regex_pattern = f'^{pattern}$'
         callback = PredicatedHandler(dispatcher.route_rules, view_variants)
         log.debug(f'Creating Django URL "{regex_pattern}" as the handler named "{dispatcher.route_name}" in the namespace "{dispatcher.route_namespace}".')
-        rv.append(RegexURLPattern(regex_pattern, callback, dispatcher.route_extra_kwargs, django_route_name))
+        rv.append(URLPattern(RegexPattern(regex_pattern, is_endpoint=True), callback, dispatcher.route_extra_kwargs, django_route_name))
 
     if viewset_variants:
         django_route_name = f'{dispatcher.route_namespace}.{dispatcher.route_name}-drf_viewset'
@@ -188,7 +189,7 @@ def create_django_route(dispatcher: Dispatcher) -> List[RegexURLPattern]:
         regex_pattern = f'^{pattern}{drf_pattern}$'
         callback = PredicatedHandler(dispatcher.route_rules, viewset_variants)
         log.debug(f'Creating DRF URL "{regex_pattern}" as the handler named "{dispatcher.route_name}" in the namespace "{dispatcher.route_namespace}".')
-        rv.append(RegexURLPattern(regex_pattern, callback, dispatcher.route_extra_kwargs, django_route_name))
+        rv.append(URLPattern(RegexPattern(regex_pattern, is_endpoint=True), callback, dispatcher.route_extra_kwargs, django_route_name))
     return rv
 
 
@@ -196,7 +197,7 @@ def generate_api_docs(configurator: Configurator):
     return ''
 
 
-def django_url_patterns(namespace: str, configurator: Configurator) -> List[RegexURLPattern]:
+def django_url_patterns(namespace: str, configurator: Configurator) -> List[URLPattern]:
     """ Generates Django URLs from registered routes
     """
     application_routes = configurator.routes.registry[namespace]
@@ -248,7 +249,7 @@ class DRFViewMixinWrapper:
     def __init__(self, view_cls: Type[GenericViewSet]) -> None:
         router = routers.SimpleRouter(trailing_slash=False)
         router.register('', view_cls)
-        urls: Tuple[RegexURLPattern, RegexURLPattern] = router.urls
+        urls: Tuple[URLPattern, URLPattern] = router.urls
         collection, item = urls
         self.collection_handler = collection.callback
         self.item_handler = item.callback

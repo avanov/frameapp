@@ -6,11 +6,10 @@ import operator
 from typing import Optional
 
 import jsonschema
-
-from rest_framework.request import Request
 from django.http import HttpRequest
-from pkg_resources import parse_version
 from pkg_resources import SetuptoolsVersion
+from pkg_resources import parse_version
+from rest_framework.request import Request
 
 from ..schemas import json_schema
 from .util import as_sorted_tuple

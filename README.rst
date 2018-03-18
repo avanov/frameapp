@@ -17,3 +17,10 @@
 .. image:: http://img.shields.io/pypi/v/metaframe.svg
     :target: https://pypi.python.org/pypi/metaframe
     :alt: Latest PyPI Release
+
+
+=========
+Metaframe
+=========
+
+Metaframe provides primitives for consistent application initialization.

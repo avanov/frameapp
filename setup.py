@@ -1,4 +1,5 @@
 import os
+from typing import List
 
 from pathlib import Path
 from setuptools import setup
@@ -7,16 +8,24 @@ from setuptools import find_packages
 
 here = Path(os.path.abspath(os.path.dirname(__file__)))
 
+
+def get_dependencies(path: Path) -> List[str]:
+    with path.open() as f:
+        rows = f.read().strip().split('\n')
+        requires = []
+        for row in rows:
+            row = row.strip()
+            if row and not (row.startswith('#') or row.startswith('http')):
+                requires.append(row)
+        return requires
+
+
 with here.joinpath('README.rst').open() as f:
     README = f.read()
 
-with here.joinpath('requirements.txt').open() as f:
-    rows = f.read().strip().split('\n')
-    requires = []
-    for row in rows:
-        row = row.strip()
-        if row and not (row.startswith('#') or row.startswith('http')):
-            requires.append(row)
+
+install_requires = get_dependencies(here / 'requirements' / 'default.txt')
+install_requires.extend(get_dependencies(here / 'requirements' / 'django.txt'))
 
 
 # Setup
@@ -44,8 +53,8 @@ setup(name='metaframe',
       include_package_data=True,
       zip_safe=False,
       test_suite='tests',
-      tests_require=['pytest', 'coverage'],
-      install_requires=requires,
+      tests_require=get_dependencies(here / 'requirements' / 'testing.txt'),
+      install_requires=install_requires,
       entry_points={
       }
     )
