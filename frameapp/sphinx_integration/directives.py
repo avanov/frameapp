@@ -32,7 +32,7 @@ class APIDocDirective(Directive):
         """
         env = self.state.document.settings.env
         app = env.app
-        config: Configurator = app.config.METAFRAME_CONFIG
+        config: Configurator = app.config.FRAMEAPP_CONFIG
         prefix = self.options.get('prefix', '/')
 
         app.info('Generating API documentation from gathered project metadata')

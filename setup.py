@@ -31,9 +31,9 @@ install_requires.extend(get_dependencies(here / 'requirements' / 'django.txt'))
 # Setup
 # ----------------------------
 
-setup(name='metaframe',
+setup(name='frameapp',
       version='0.0.1',
-      description='Metaframe',
+      description='Frameapp',
       long_description=README,
       classifiers=[
           'Development Status :: 1 - Planning',
@@ -47,7 +47,7 @@ setup(name='metaframe',
       ],
       author='Maxim Avanov',
       author_email='maxim.avanov@gmail.com',
-      url='https://github.com/avanov',
+      url='https://github.com/avanov/frameapp',
       keywords='web',
       packages=find_packages(),
       include_package_data=True,

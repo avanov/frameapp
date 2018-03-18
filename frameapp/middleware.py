@@ -8,7 +8,7 @@ from pkg_resources import parse_version
 log = logging.getLogger(__name__)
 
 
-class MetaframeMiddleware:
+class FrameappMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
         # One-time configuration and initialization.
@@ -29,9 +29,9 @@ class MetaframeMiddleware:
         """
         if 'version' in view_kwargs:
             version = parse_version(view_kwargs['version'])
-            if version < settings.METAFRAME['MIN_API_VERSION']:
+            if version < settings.FRAMEAPP['MIN_API_VERSION']:
                 return HttpResponse(status=410)
         else:
-            log.debug(f"API Version is not specified. Defaulting to {settings.METAFRAME['MIN_API_VERSION']}")
-            version = settings.METAFRAME['MIN_API_VERSION']
+            log.debug(f"API Version is not specified. Defaulting to {settings.FRAMEAPP['MIN_API_VERSION']}")
+            version = settings.FRAMEAPP['MIN_API_VERSION']
         setattr(request, 'API_VERSION', version)

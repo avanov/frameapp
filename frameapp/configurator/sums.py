@@ -133,7 +133,7 @@ class SumVariant:
                 }
                 scanner.configurator.sums.update_sum_type_registry(self.variant_of.__sum_meta__)
 
-            info = self.venusian.attach(wrapped, callback, category='metaframe_namespace', depth=depth + 1)
+            info = self.venusian.attach(wrapped, callback, category='frameapp_namespace', depth=depth + 1)
             if info.scope == 'class':
                 # if the decorator was attached to a method in a class, or
                 # otherwise executed at class scope, we need to set an
