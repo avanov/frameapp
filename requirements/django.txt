@@ -1,0 +1,7 @@
+Django>=2.0.3
+djangorestframework>=3.7.7
+wrapt>=1.10.11
+drf_openapi>=1.3.0
+jsonschema==2.6.0
+Sphinx>=1.6.4
+pytz>=2017.2
