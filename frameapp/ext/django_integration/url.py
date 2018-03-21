@@ -13,12 +13,13 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import routers
 
-from .exceptions import ConfigurationError
-from .configurator import Configurator
-from .configurator.sums import SumType
-from .configurator.routes import ViewVariant
-from .util import maybe_dotted
-from .view import PredicatedHandler
+from frameapp.exceptions import ConfigurationError
+from frameapp.configurator import Configurator
+from frameapp.configurator.sums import SumType
+from frameapp.configurator.routes import ViewVariant
+from frameapp.util import maybe_dotted
+from frameapp.ext.django_integration.view import PredicatedHandler
+
 
 log = logging.getLogger(__name__)
 

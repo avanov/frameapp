@@ -7,8 +7,8 @@ from django.http import Http404 as HTTPNotFound
 from rest_framework.request import Request as DRFRequest
 from rest_framework.response import Response as DRFResponse
 
-from .configurator.routes import ViewVariant
-from .configurator.sums import SumType
+from frameapp.configurator.routes import ViewVariant
+from frameapp.configurator.sums import SumType
 
 
 log = logging.getLogger(__name__)
