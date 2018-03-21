@@ -32,7 +32,7 @@ install_requires.extend(get_dependencies(here / 'requirements' / 'django.txt'))
 # ----------------------------
 
 setup(name='frameapp',
-      version='0.0.2',
+      version='0.0.3',
       description='Frameapp',
       long_description=README,
       classifiers=[

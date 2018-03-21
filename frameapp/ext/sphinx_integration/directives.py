@@ -13,9 +13,9 @@ from drf_openapi.entities import OpenApiSchemaGenerator
 from sphinx.util.docstrings import prepare_docstring
 from sphinx.util.nodes import nested_parse_with_titles
 
-from ..schemas import json_schema_str
+from frameapp.schemas import json_schema_str
 
-from ..configurator import Configurator
+from frameapp.configurator import Configurator
 
 
 class APIDocDirective(Directive):
