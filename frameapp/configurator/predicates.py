@@ -7,7 +7,7 @@ from typing import Optional
 
 import jsonschema
 from django.http import HttpRequest
-from pkg_resources import SetuptoolsVersion
+from pkg_resources.extern.packaging.version import Version
 from pkg_resources import parse_version
 from rest_framework.request import Request
 
@@ -81,10 +81,8 @@ class ApiVersionPredicate:
                 return True
         return False
 
-    def match_api_version(self, request_version: SetuptoolsVersion, allowed_version) -> bool:
+    def match_api_version(self, request_version: Version, allowed_version) -> bool:
         """
-
-        :param request_version:
         :param allowed_version: may be represented in following forms:
             1. ``VERSION``
             2. ``==VERSION`` (the same as above)
